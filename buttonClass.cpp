@@ -3,7 +3,7 @@
 
 button::button(int pin)
 {
-  pinMode(pin, INPUT);
+  pinMode(pin, INPUT_PULLUP);
   m_pin = pin;
   m_state = 0;
   m_timeOfAction = 0;
