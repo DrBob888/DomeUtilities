@@ -1,24 +1,66 @@
 #include "buttonClass.h"
 #include "arduino.h"
 
-button::button(int pin)
+button::button(int buttonPin, int ledPin)
 {
-  pinMode(pin, INPUT_PULLUP);
-  m_pin = pin;
-  m_state = 0;
+  // Set the pin modes for the button and LED pins and save to local variables
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(ledPin, OUTPUT);
+  m_buttonPin = buttonPin;
+  m_ledPin = ledPin;
+
+  // Initially, button is off and released.
+  m_state = false;
+  m_onOff; = false;
+
+  // Last action was at t = 0
   m_timeOfAction = 0;
+
+  // Haven't done anything yet
+  m_numberOfActions = 0;
 }
 
-int button::getState()
+bool button::getState()
 {
-  int val = digitalRead(m_pin);
+  // Read the button pin
+  bool val = digitalRead(m_buttonPin);
+
+  // How long since the last button action?
   unsigned long currentTime = millis();
   unsigned long timeSinceAction = currentTime-m_timeOfAction;
+
+  // If it has been long enough, then check to see if a press or release action has occurred
   if (timeSinceAction > 100) {
-    if (val != m_state) {
+    if (val != m_pressed) {
+	  // OK, we have a new action.  Update the time of action and update the pressed/released state
       m_timeOfAction = currentTime;
-      m_state = val;
+      m_pressed = val;
     }
+	if (m_pressed) {
+		// If this is a button press, then toggle the on/off state and update the LED.
+		m_state = !m_state;
+		digitalWrite(m_ledPin, m_state);
+
+		// And update the count of number of actions.
+		m_numberOfActions++;
+	}
   }
   return m_state;
+}
+
+void button::setState(bool state)
+{
+	// Just overwrite the new state
+	m_state = state;
+
+	// Update the LED pin
+	digitalWrite(m_ledPin, m_state);
+
+	// Update the number of actions
+	m_numberOfActions++;
+}
+
+void button::getNumberOfActions()
+{
+	return m_numberOfActions();
 }
