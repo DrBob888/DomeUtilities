@@ -50,8 +50,8 @@ bool button::getState() {
 }
 
 void button::setState(bool state) {
-	// Just overwrite the new state
-	m_state = state;
+    // Just overwrite the new state
+    m_state = state;
 
 	// Update the LED pin
 	digitalWrite(m_ledPin, m_state);
