@@ -11,7 +11,7 @@ button::button(int buttonPin, int ledPin)
 
   // Initially, button is off and released.
   m_state = false;
-  m_onOff; = false;
+  m_pressed = false;
 
   // Last action was at t = 0
   m_timeOfAction = 0;
@@ -23,7 +23,9 @@ button::button(int buttonPin, int ledPin)
 bool button::getState()
 {
   // Read the button pin
-  bool val = digitalRead(m_buttonPin);
+  bool val = !digitalRead(m_buttonPin);
+//  Serial.println(m_buttonPin);
+//  Serial.println(val);
 
   // How long since the last button action?
   unsigned long currentTime = millis();
@@ -35,16 +37,17 @@ bool button::getState()
 	  // OK, we have a new action.  Update the time of action and update the pressed/released state
       m_timeOfAction = currentTime;
       m_pressed = val;
-    }
-	if (m_pressed) {
-		// If this is a button press, then toggle the on/off state and update the LED.
-		m_state = !m_state;
-		digitalWrite(m_ledPin, m_state);
 
-		// And update the count of number of actions.
-		m_numberOfActions++;
-	}
-  }
+      if (m_pressed) {
+        // If this is a button press, then toggle the on/off state and update the LED.
+	m_state = !m_state;
+	digitalWrite(m_ledPin, m_state);
+
+	// And update the count of number of actions.
+	m_numberOfActions++;
+     }
+   }
+  } 
   return m_state;
 }
 
@@ -60,7 +63,7 @@ void button::setState(bool state)
 	m_numberOfActions++;
 }
 
-void button::getNumberOfActions()
+int button::getNumberOfActions()
 {
-	return m_numberOfActions();
+	return m_numberOfActions;
 }
