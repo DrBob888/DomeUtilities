@@ -5,7 +5,9 @@ class button
     // Each push of the button advances the state by one.  When max states
     // is exceeded, the state wraps back to zero.  Note that a button with 
     // only two states will toggle on and off each time it is pressed.
-    button(int buttonPin, int ledPin, int numberStates = 2);
+    button(int buttonPin, int ledPin, int numStates);
+    button();
+    void setButtonProperties(int buttonPin, int ledPin, int numStates);
 
     // Returns true if state changed
     bool stateChanged();
@@ -31,7 +33,7 @@ class button
     unsigned long m_timeOfAction;
 
     // Button "on" or "off" state
-    bool m_state;
+    int m_state;
 
     // Button pressed or released state
     bool m_pressed;
