@@ -14,8 +14,8 @@ void setup() {
 }
 
 void loop() {
-	if (*myLora.available()) {
-		*myLora.receive(workingBuffer, BUFLEN);
+	if (myLora.available()) {
+		myLora.receive(workingBuffer, BUFLEN);
 		Serial.println(workingBuffer);
 	}
 	
