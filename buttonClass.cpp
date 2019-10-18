@@ -87,7 +87,7 @@ int button::getState() {
     return m_state;
 };
 
-void button::setState(bool state) {
+void button::setState(int state) {
     // Just overwrite the new state
     m_state = state;
     // Update the LED pin

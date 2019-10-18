@@ -16,7 +16,7 @@ class button
     int getState();
 
     // Sets the state of the button
-    void setState(bool state);
+    void setState(int state);
 
     // Returns total number of button state changes
     int getNumberOfActions();
