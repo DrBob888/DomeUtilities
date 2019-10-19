@@ -16,7 +16,8 @@ int lora::send(const char* command, char* response, int buflen) {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		Serial2.print(command);
 		Serial2.print("\r\n");
-		int n = Serial2.readBytesUntil('\n', response, buflen);
+		//int n = Serial2.readBytesUntil('\n', response, buflen);
+		int n = 0;
 	#else
 		m_port->print(command);
 		m_port->print("\r\n");
