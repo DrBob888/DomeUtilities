@@ -1,6 +1,8 @@
 #include "lora.h"
 #include "arduino.h"
 
+// Constuctor.  If this is a Mega, then we just start Serial1.  If it is a
+// Nano, then create the SoftwareSerial object and then start it
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	lora::lora() {
 		Serial1.begin(9600);
@@ -12,21 +14,18 @@
 	}
 #endif
 
-int lora::send(const char* command, char* response, int buflen) {
+// Append terminator and send
+void lora::send(const char* command) {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		Serial1.print(command);
 		Serial1.print("\r\n");
-		//int n = Serial1.readBytesUntil('\n', response, buflen);
-		int n = 0;
 	#else
 		m_port->print(command);
 		m_port->print("\r\n");
-		int n = m_port->readBytesUntil('\n', response, buflen);
 	#endif
-	response[n-1] = 0;
-	return n;
 }
 
+// Read characters until we get the terminator.
 int lora::receive(char* response, int buflen) {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		int n = Serial1.readBytesUntil('\n', response, buflen);
@@ -37,6 +36,7 @@ int lora::receive(char* response, int buflen) {
 	return n;
 }
 
+// Check to see if characters are available.
 bool lora::available() {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		bool ret = Serial1.available() > 0;
