@@ -3,7 +3,7 @@
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	lora::lora() {
-		Serial2.begin(9600);
+		Serial1.begin(9600);
 	}
 #else
 	lora::lora(int txPin, int rxPin) {
@@ -14,9 +14,9 @@
 
 int lora::send(const char* command, char* response, int buflen) {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		Serial2.print(command);
-		Serial2.print("\r\n");
-		int n = Serial2.readBytesUntil('\n', response, buflen);
+		Serial1.print(command);
+		Serial1.print("\r\n");
+		int n = Serial1.readBytesUntil('\n', response, buflen);
 	#else
 		m_port->print(command);
 		m_port->print("\r\n");
@@ -28,7 +28,7 @@ int lora::send(const char* command, char* response, int buflen) {
 
 int lora::receive(char* response, int buflen) {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		int n = Serial2.readBytesUntil('\n', response, buflen);
+		int n = Serial1.readBytesUntil('\n', response, buflen);
 	#else
 		int n = m_port->readBytesUntil('\n', response, buflen);
 	#endif
@@ -38,7 +38,7 @@ int lora::receive(char* response, int buflen) {
 
 bool lora::available() {
 	#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		bool ret = Serial2.available() > 0;
+		bool ret = Serial1.available() > 0;
 	#else
 		bool ret = m_port->available() > 0;
 	#endif
