@@ -1,6 +1,10 @@
 #include "buttonClass.h"
 #include "arduino.h"
 
+#ifndef DEBOUNCE_DELAY
+#define DEBOUNCE_DELAY 100
+#endif
+
 button::button(int buttonPin, int ledPin, int numStates) {
 
     // Set the pin modes for the button and LED pins and save to local variables
@@ -53,7 +57,7 @@ bool button::stateChanged() {
     unsigned long timeSinceAction = currentTime-m_timeOfAction;
 
     // If it has been long enough, then check to see if a press or release action has occurred
-    if (timeSinceAction > 100) {
+    if (timeSinceAction > DEBOUNCE_DELAY) {
         if (val != m_pressed) {
 
 	    // OK, we have a new action.  Update the time of action and update the pressed/released state
