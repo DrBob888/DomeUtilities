@@ -1,5 +1,5 @@
 #include "lora.h"
-#include "arduino.h"
+#include "Arduino.h"
 
 // Constuctor.  If this is a Mega, then we just start Serial1.  If it is a
 // Nano, then create the SoftwareSerial object and then start it
