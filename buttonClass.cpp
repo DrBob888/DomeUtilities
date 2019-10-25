@@ -1,5 +1,5 @@
 #include "buttonClass.h"
-#include "arduino.h"
+#include "Arduino.h"
 
 //check if debounce delay has been changed elsewhere
 #ifndef DEBOUNCE_DELAY
