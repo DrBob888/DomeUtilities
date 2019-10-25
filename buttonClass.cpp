@@ -1,11 +1,12 @@
 #include "buttonClass.h"
 #include "arduino.h"
 
+//check if debounce delay has been changed elsewhere
 #ifndef DEBOUNCE_DELAY
 #define DEBOUNCE_DELAY 100
 #endif
 
-button::button(int buttonPin, int ledPin, int numStates) {
+button::button(int buttonPin, int ledPin, int numStates, bool onlyTwoStates) {
 
     // Set the pin modes for the button and LED pins and save to local variables
     pinMode(buttonPin, INPUT_PULLUP);
@@ -13,6 +14,7 @@ button::button(int buttonPin, int ledPin, int numStates) {
     m_buttonPin = buttonPin;
     m_ledPin = ledPin;
     m_numberStates = numStates;
+	m_onlyOnOff = onlyTwoStates;
 
     // Initially, button is off and released.
     m_state = false;
@@ -29,12 +31,14 @@ button::button() {
 
 }
 
-void button::setButtonProperties(int buttonPin, int ledPin, int numStates) {
+void button::setButtonProperties(int buttonPin, int ledPin, int numStates, bool onlyTwoStates) {
     pinMode(buttonPin, INPUT_PULLUP);
     pinMode(ledPin, OUTPUT);
     m_buttonPin = buttonPin;
     m_ledPin = ledPin;
     m_numberStates = numStates;
+	m_onlyOnOff = onlyTwoStates; //used for forcing specific buttons to only have two states
+								 //while the corresponding dome can have more
 
     // Initially, button is off and released.
     m_state = false;
@@ -65,9 +69,9 @@ bool button::stateChanged() {
             m_pressed = val;
 
             if (m_pressed) {
-
-                // If this is a button press, then toggle the on/off state and update the LED.
-                if (++m_state >= m_numberStates) {
+				m_state++;
+                // If this is a button press, then increment state and update LED
+                if (m_state >= m_numberStates || (m_state > 1 && m_onlyOnOff)) {
                     m_state = 0;
                 }
 

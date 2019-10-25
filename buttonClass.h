@@ -5,9 +5,11 @@ class button
     // Each push of the button advances the state by one.  When max states
     // is exceeded, the state wraps back to zero.  Note that a button with 
     // only two states will toggle on and off each time it is pressed.
-    button(int buttonPin, int ledPin, int numStates);
+	// a button forced to onlyTwoStates will only toggle between two states,
+	// but the corresponding dome can have more states (multicolor domes)
+    button(int buttonPin, int ledPin, int numStates, bool onlyTwoStates);
     button();
-    void setButtonProperties(int buttonPin, int ledPin, int numStates);
+    void setButtonProperties(int buttonPin, int ledPin, int numStates, bool onlyTwoStates);
 
     // Returns true if state changed
     bool stateChanged();
@@ -25,6 +27,9 @@ class button
     // button and led pins
     int m_buttonPin;
     int m_ledPin;
+	
+	//button only has access to two states
+	bool m_onlyOnOff;
   
     // Number of states
     int m_numberStates;
